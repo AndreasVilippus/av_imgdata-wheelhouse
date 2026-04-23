@@ -33,7 +33,7 @@ dsm7-x86_64-python38-2026.04.23
   wheelhouse-manifest.json
   insightface-0.7.3-cp38-cp38-linux_x86_64.whl
   opencv_python_headless-4.10.0.84-cp37-abi3-linux_x86_64.whl
-  onnxruntime-1.19.2-cp38-cp38-manylinux_2_27_x86_64.whl
+  onnxruntime-1.16.3-cp38-cp38-manylinux_2_17_x86_64.whl
 ```
 
 AV ImgData should consume the manifest, download only the matching files, verify SHA256 hashes, then install with:

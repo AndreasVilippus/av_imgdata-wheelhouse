@@ -92,6 +92,21 @@ def run_chroot(chroot: Path, command: list[str], *, dry_run: bool = False) -> No
     subprocess.check_call(full_command)
 
 
+def sync_wheelhouse_output(chroot: Path, project: str, target: str, root: Path, *, dry_run: bool = False) -> None:
+    source_dir = chroot / "source" / project / "wheelhouse" / target
+    target_dir = root / "wheelhouse" / target
+    print(f"sync {source_dir} -> {target_dir}")
+    if dry_run:
+        return
+    if not source_dir.is_dir():
+        raise SystemExit(f"wheelhouse output not found: {source_dir}")
+    target_dir.mkdir(parents=True, exist_ok=True)
+    for path in sorted(source_dir.iterdir()):
+        if not path.is_file():
+            continue
+        shutil.copy2(path, target_dir / path.name)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build AV ImgData wheels in an existing Synology toolkit chroot.")
     parser.add_argument("-p", "--platform", default="", help="Toolkit platform, e.g. geminilake. Defaults to the single matching chroot.")
@@ -99,6 +114,9 @@ def main() -> None:
     parser.add_argument("-t", "--target", default=DEFAULT_TARGET, help=f"Wheelhouse target name. Default: {DEFAULT_TARGET}")
     parser.add_argument("--python", default=DEFAULT_PYTHON, help=f"Python executable inside chroot. Default: {DEFAULT_PYTHON}")
     parser.add_argument("--info-only", action="store_true", help="Only print target information inside chroot.")
+    parser.add_argument("--test", action="store_true", help="Install from the generated wheelhouse into a clean venv inside chroot and run import checks.")
+    parser.add_argument("--sync-only", action="store_true", help="Only copy existing wheelhouse output from the selected chroot back to this repository.")
+    parser.add_argument("--no-sync", action="store_true", help="Do not copy wheelhouse output back after a successful build.")
     parser.add_argument("--dry-run", action="store_true", help="Print commands without executing them.")
     args = parser.parse_args()
 
@@ -115,6 +133,10 @@ def main() -> None:
     print(f"target={args.target}")
     print(f"python={args.python}")
 
+    if args.sync_only:
+        sync_wheelhouse_output(chroot, project, args.target, root, dry_run=args.dry_run)
+        return
+
     if not args.dry_run:
         link_project_with_toolkit(toolkit, project, platform, version)
 
@@ -124,6 +146,13 @@ def main() -> None:
             f"PYTHON_BIN={args.python}",
             f"/source/{project}/build/print-target-info.sh",
         ]
+    elif args.test:
+        command = [
+            "env",
+            f"PYTHON_BIN={args.python}",
+            f"/source/{project}/build/test-wheelhouse.sh",
+            args.target,
+        ]
     else:
         command = [
             "env",
@@ -132,6 +161,8 @@ def main() -> None:
             args.target,
         ]
     run_chroot(chroot, command, dry_run=args.dry_run)
+    if not args.info_only and not args.test and not args.no_sync:
+        sync_wheelhouse_output(chroot, project, args.target, root, dry_run=args.dry_run)
 
 
 if __name__ == "__main__":

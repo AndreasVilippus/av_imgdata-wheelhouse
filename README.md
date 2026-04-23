@@ -66,11 +66,24 @@ The wrapper works relative to the repository location:
 - uses the existing `pkgscripts-ng` and `build_env`
 - links the project into the selected chroot under `/source/av_imgdata-wheelhouse`
 - runs the wheel build inside the selected chroot with Python 3.8
+- copies the generated `wheelhouse/<target>/` output back to this repository
 
 To only inspect the selected target environment:
 
 ```bash
 ./build/build-in-toolkit-env.py -v 7.3 -p geminilake --info-only
+```
+
+If a build was already run and only the generated files should be copied back:
+
+```bash
+./build/build-in-toolkit-env.py -v 7.3 -p geminilake --sync-only
+```
+
+To validate the generated wheelhouse inside the same chroot:
+
+```bash
+./build/build-in-toolkit-env.py -v 7.3 -p geminilake --test
 ```
 
 The lower-level build script can still be run directly inside the chroot:

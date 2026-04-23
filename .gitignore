@@ -2,8 +2,7 @@
 /__pycache__/
 **/__pycache__/
 /dist/
-/wheelhouse/*.whl
-/wheelhouse/*.tar.gz
-/wheelhouse/*.zip
+/wheelhouse/*
+!/wheelhouse/.gitkeep
 /tmp/
 *.log

@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-04-23T00:00:00+00:00",
+  "packages": [
+    {
+      "file": "insightface-0.7.3-cp38-cp38-linux_x86_64.whl",
+      "name": "insightface",
+      "sha256": "<sha256>",
+      "size": 0
+    }
+  ],
+  "requirements_file": "requirements-runtime-insightface.txt",
+  "schema_version": 1,
+  "target": "dsm7-x86_64-python38"
+}
+

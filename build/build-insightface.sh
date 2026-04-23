@@ -11,6 +11,7 @@ MANIFEST_PATH="${WHEEL_DIR}/wheelhouse-manifest.json"
 
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 
+rm -rf "${WHEEL_DIR}"
 mkdir -p "${WHEEL_DIR}"
 
 if [ ! -x "${VENV_DIR}/bin/python" ]; then

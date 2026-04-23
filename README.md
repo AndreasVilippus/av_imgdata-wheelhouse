@@ -79,4 +79,6 @@ The lower-level build script can still be run directly inside the chroot:
 ./build/build-insightface.sh dsm7-x86_64-python38
 ```
 
+The InsightFace source build intentionally runs with `--no-build-isolation` and `cython<3`. The DSM 7.3/geminilake toolchain uses GCC 4.9.2; isolated builds may pull Cython 3.x, which can generate C++ requiring `<string_view>`, unavailable in that compiler.
+
 The script writes wheels to `wheelhouse/<target>/` and generates `wheelhouse/<target>/wheelhouse-manifest.json`.

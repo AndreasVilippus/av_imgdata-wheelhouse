@@ -1,7 +1,8 @@
 build
-cython
+# DSM 7.3/geminilake uses GCC 4.9.2. Cython 3 generates C++ that may include
+# <string_view>, which is unavailable there.
+cython<3
 numpy==1.24.4
 pip
 setuptools
 wheel
-

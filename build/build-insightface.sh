@@ -25,6 +25,7 @@ PIP="${VENV_DIR}/bin/pip"
 "${PIP}" wheel \
     --wheel-dir "${WHEEL_DIR}" \
     --no-binary insightface \
+    --no-build-isolation \
     -r "${RUNTIME_REQS}"
 
 "${PYTHON}" "${ROOT_DIR}/build/write-manifest.py" \
@@ -34,4 +35,3 @@ PIP="${VENV_DIR}/bin/pip"
     --output "${MANIFEST_PATH}"
 
 echo "Wrote ${MANIFEST_PATH}"
-

@@ -19,6 +19,8 @@ rm -rf "${VENV_DIR}"
 PYTHON="${VENV_DIR}/bin/python"
 PIP="${VENV_DIR}/bin/pip"
 
+export NO_ALBUMENTATIONS_UPDATE=1
+
 "${PYTHON}" -m pip install --upgrade pip setuptools wheel
 "${PIP}" install --no-index --find-links "${WHEEL_DIR}" -r "${RUNTIME_REQS}"
 
@@ -33,4 +35,3 @@ print("onnxruntime", onnxruntime.__version__)
 print("insightface", getattr(insightface, "__version__", "unknown"))
 print("FaceAnalysis", FaceAnalysis)
 PY
-

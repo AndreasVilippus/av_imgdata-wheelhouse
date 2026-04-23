@@ -10,6 +10,8 @@ Initial target:
 
 - `dsm7-x86_64-python38`
 
+See `TARGETS.md` for target naming and confirmation steps.
+
 Planned target naming:
 
 - `dsm7-x86_64-python38`
@@ -44,9 +46,37 @@ pip install --no-index --find-links <local-wheelhouse> -r requirements-optional-
 
 Run builds inside the DSM-compatible chroot used by the Synology toolkit. Avoid building native wheels on a modern generic Linux host unless the output is audited for DSM compatibility.
 
+From a standard toolkit checkout with this repository below `source/`:
+
+```bash
+cd /path/to/toolkit/source/av_imgdata-wheelhouse
+./build/build-in-toolkit-env.py -v 7.3 -p geminilake
+```
+
+Run this from a shell that is allowed to use the toolkit chroot, equivalent to the shell used for:
+
+```bash
+cd /path/to/toolkit/pkgscripts-ng
+./PkgCreate.py -v 7.3 -c av_imgdata
+```
+
+The wrapper works relative to the repository location:
+
+- detects the toolkit root from `../..`
+- uses the existing `pkgscripts-ng` and `build_env`
+- links the project into the selected chroot under `/source/av_imgdata-wheelhouse`
+- runs the wheel build inside the selected chroot with Python 3.8
+
+To only inspect the selected target environment:
+
+```bash
+./build/build-in-toolkit-env.py -v 7.3 -p geminilake --info-only
+```
+
+The lower-level build script can still be run directly inside the chroot:
+
 ```bash
 ./build/build-insightface.sh dsm7-x86_64-python38
 ```
 
 The script writes wheels to `wheelhouse/<target>/` and generates `wheelhouse/<target>/wheelhouse-manifest.json`.
-

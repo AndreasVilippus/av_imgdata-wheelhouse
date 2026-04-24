@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from typing import List, Tuple
 
 
 DEFAULT_TARGET = "dsm7-x86_64-python38"
@@ -40,7 +41,7 @@ def available_chroots(build_env: Path):
     return result
 
 
-def select_chroot(build_env: Path, platform: str, version: str) -> tuple[str, str, Path]:
+def select_chroot(build_env: Path, platform: str, version: str) -> Tuple[str, str, Path]:
     chroots = available_chroots(build_env)
     if not chroots:
         raise SystemExit(f"no ds.<platform>-<version> chroots found in {build_env}")
@@ -84,7 +85,7 @@ def chroot_command() -> str:
     raise SystemExit("chroot command not found")
 
 
-def run_chroot(chroot: Path, command: list[str], *, dry_run: bool = False) -> None:
+def run_chroot(chroot: Path, command: List[str], *, dry_run: bool = False) -> None:
     full_command = [chroot_command(), str(chroot)] + command
     print("+ " + " ".join(full_command))
     if dry_run:

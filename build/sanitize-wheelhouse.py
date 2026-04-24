@@ -9,6 +9,7 @@ import subprocess
 import tempfile
 import zipfile
 from pathlib import Path
+from typing import Optional
 
 from packaging.requirements import Requirement
 from packaging.utils import canonicalize_name, parse_wheel_filename
@@ -91,7 +92,7 @@ def rewrite_wheel_from_directory(source_dir: Path, wheel_path: Path) -> None:
     tmp_wheel.replace(wheel_path)
 
 
-def sanitize_insightface_wheel(wheel_path: Path, strip_binary: str | None) -> bool:
+def sanitize_insightface_wheel(wheel_path: Path, strip_binary: Optional[str]) -> bool:
     changed = False
     with tempfile.TemporaryDirectory() as tmpdir:
         workdir = Path(tmpdir)

@@ -23,11 +23,18 @@ PIP="${VENV_DIR}/bin/pip"
 
 "${PYTHON}" -m pip install --upgrade -r "${BUILD_REQS}"
 
+export CFLAGS="${CFLAGS:+${CFLAGS} }-g0 -fdebug-prefix-map=${ROOT_DIR}=."
+export CXXFLAGS="${CXXFLAGS:+${CXXFLAGS} }-g0 -fdebug-prefix-map=${ROOT_DIR}=."
+
 "${PIP}" wheel \
     --wheel-dir "${WHEEL_DIR}" \
     --no-binary insightface \
     --no-build-isolation \
     -r "${RUNTIME_REQS}"
+
+"${PYTHON}" "${ROOT_DIR}/build/sanitize-wheelhouse.py" \
+    --wheel-dir "${WHEEL_DIR}" \
+    --requirements "${RUNTIME_REQS}"
 
 "${PYTHON}" "${ROOT_DIR}/build/write-manifest.py" \
     --target "${TARGET}" \

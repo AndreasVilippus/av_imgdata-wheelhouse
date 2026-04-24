@@ -94,4 +94,10 @@ The lower-level build script can still be run directly inside the chroot:
 
 The InsightFace source build intentionally runs with `--no-build-isolation` and `cython<3`. The DSM 7.3/geminilake toolchain uses GCC 4.9.2; isolated builds may pull Cython 3.x, which can generate C++ requiring `<string_view>`, unavailable in that compiler.
 
+After the wheel build, `build/sanitize-wheelhouse.py` removes duplicate package wheels that do not match the pinned runtime constraints, strips debug symbols from the locally built InsightFace extension and removes generated Cython source files from the published InsightFace wheel.
+
 The script writes wheels to `wheelhouse/<target>/` and generates `wheelhouse/<target>/wheelhouse-manifest.json`.
+
+## Licensing
+
+See `THIRD_PARTY_LICENSES.md` for the publication rules and the important license caveats. Most importantly: this repository does not publish InsightFace pretrained models.

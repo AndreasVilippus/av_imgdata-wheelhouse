@@ -18,8 +18,6 @@ from packaging.version import Version
 
 INSIGHTFACE_CPP = Path("insightface/thirdparty/face3d/mesh/cython/mesh_core_cython.cpp")
 INSIGHTFACE_SO = Path("insightface/thirdparty/face3d/mesh/cython/mesh_core_cython.cpython-38-x86_64-linux-gnu.so")
-AV_IMGDATA_STATUS = Path("insightface/av_imgdata_status.py")
-AV_IMGDATA_STATUS_SOURCE = '"""AV ImgData optional package status provider for InsightFace."""\n\n\ndef _as_non_negative_int(value):\n    try:\n        return max(0, int(value or 0))\n    except (TypeError, ValueError):\n        return 0\n\n\ndef status_blocks(context):\n    """Return package-owned status rows for AV ImgData.\n\n    AV ImgData supplies runtime context, but the optional package decides which\n    status rows are exposed in the package status area.\n    """\n    return [\n        {\n            "key": "generated_face_profiles",\n            "label_key": "status:pip_generated_face_profiles",\n            "fallback_label": "Generated face profiles",\n            "value": _as_non_negative_int((context or {}).get("generated_face_profiles_count")),\n        }\n    ]\n'
 
 
 def parse_requirements(path: Path):
@@ -94,16 +92,6 @@ def rewrite_wheel_from_directory(source_dir: Path, wheel_path: Path) -> None:
     tmp_wheel.replace(wheel_path)
 
 
-def inject_av_imgdata_status_provider(source_dir: Path) -> bool:
-    target = source_dir / AV_IMGDATA_STATUS
-    current = target.read_text(encoding="utf-8") if target.exists() else ""
-    if current == AV_IMGDATA_STATUS_SOURCE:
-        return False
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(AV_IMGDATA_STATUS_SOURCE, encoding="utf-8")
-    return True
-
-
 def sanitize_insightface_wheel(wheel_path: Path, strip_binary: Optional[str]) -> bool:
     changed = False
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -114,9 +102,6 @@ def sanitize_insightface_wheel(wheel_path: Path, strip_binary: Optional[str]) ->
         cpp_path = workdir / INSIGHTFACE_CPP
         if cpp_path.exists():
             cpp_path.unlink()
-            changed = True
-
-        if inject_av_imgdata_status_provider(workdir):
             changed = True
 
         so_path = workdir / INSIGHTFACE_SO

@@ -13,11 +13,14 @@ This repository publishes wheelhouse artifacts for optional AV ImgData features.
 - `insightface==0.7.3`: MIT for the Python library code.
 - `onnxruntime==1.16.3`: MIT.
 - `opencv-python-headless==4.10.0.84`: OpenCV is Apache 2.0; the wheel also includes third-party components and notices.
+- `Pillow==10.4.0`: HPND-style Pillow license.
+- `pillow-heif==0.18.0`: LGPL-3.0; the wheel includes native HEIF/AVIF decoding components and their notices.
 
 ## Important Redistribution Notes
 
 - InsightFace upstream states that pretrained models are available only for non-commercial research purposes. That restriction applies to models, not to the Python library code itself.
 - `opencv-python-headless` ships third-party notices and includes FFmpeg under LGPLv2.1 according to the upstream PyPI package documentation.
+- `pillow-heif` is added to decode HEIC/HEIF images before handing decoded JPEG bytes to OpenCV/InsightFace.
 - Additional wheels in the release set include further licenses such as MPL-2.0, BSD variants, LGPL-3.0 and mixed/dual-licensed packages.
 
 ## Practical Publication Rule

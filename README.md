@@ -29,11 +29,13 @@ The target must match the NAS runtime closely enough for native wheels:
 Use one GitHub release per target and build date or package set:
 
 ```text
-dsm7-x86_64-python38-2026.04.23
+dsm7-x86_64-python38-2026.06.21
   wheelhouse-manifest.json
   insightface-0.7.3-cp38-cp38-linux_x86_64.whl
   opencv_python_headless-4.10.0.84-cp37-abi3-linux_x86_64.whl
   onnxruntime-1.16.3-cp38-cp38-manylinux_2_17_x86_64.whl
+  pillow-10.4.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+  pillow_heif-0.18.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 ```
 
 AV ImgData should consume the manifest, download only the matching files, verify SHA256 hashes, then install with:

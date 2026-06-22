@@ -29,9 +29,13 @@ import cv2
 import onnxruntime
 from insightface.app import FaceAnalysis
 import insightface
+from PIL import Image
+import pillow_heif
 
 print("cv2", cv2.__version__)
 print("onnxruntime", onnxruntime.__version__)
 print("insightface", getattr(insightface, "__version__", "unknown"))
 print("FaceAnalysis", FaceAnalysis)
+print("Pillow", Image.__version__)
+print("pillow_heif", getattr(pillow_heif, "__version__", "unknown"))
 PY
